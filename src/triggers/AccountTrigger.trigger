@@ -5,7 +5,9 @@ trigger AccountTrigger on Account (after insert, after update, after delete) {
    if(Trigger.isInsert){
       AccountTriggerHandler.onAfterCreate(accountList);
    } else if(Trigger.isUpdate){
-      AccountTriggerHandler.onAfterUpdate(accountList);
+       AccountTriggerHandler.onAfterUpdateCheckCountTask(ids);
+       AccountTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap, ids);
    // AccountTriggerHandler.afterInsert();
    }
+
 }

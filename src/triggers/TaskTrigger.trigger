@@ -8,6 +8,7 @@ trigger TaskTrigger on Task (after update, after insert) {
     List<Task> listTasks = Trigger.new;
 
     if(Trigger.isUpdate){
+        TaskTriggerHandler.checkTaskAccount(listTasks);
         TaskTriggerHandler.onAfterUpdate(listTasks);
     }
 
