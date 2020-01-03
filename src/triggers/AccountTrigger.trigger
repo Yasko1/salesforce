@@ -1,13 +1,9 @@
-trigger AccountTrigger on Account (after insert, after update, after delete) {
-  Set<Id> ids = Trigger.newMap.keySet();
-   List<Account> accountList = [SELECT Id, Name FROM Account WHERE Id in:ids];
+trigger AccountTrigger on Account (after update, after insert, after undelete, after delete, before insert,
+        before update, before delete) {
 
-   if(Trigger.isInsert){
-      AccountTriggerHandler.onAfterCreate(accountList);
-   } else if(Trigger.isUpdate){
-       AccountTriggerHandler.onAfterUpdateCheckCountTask(ids);
-       AccountTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap, ids);
-   // AccountTriggerHandler.afterInsert();
+   if(Trigger.isInsert && Trigger.isAfter){
+      AccountTriggerHandler.onAfterCreate(Trigger.newMap.keySet());
+   } else if(Trigger.isUpdate && Trigger.isAfter){
+       AccountTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
    }
-
 }
