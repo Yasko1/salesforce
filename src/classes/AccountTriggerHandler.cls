@@ -3,16 +3,24 @@
  */
 
 public without sharing class AccountTriggerHandler {
+    public static Boolean isFirstTime = true;
 
 
     public static void onAfterCreate(Set<Id> idAccounts){
-        AccountTriggerHelper.createTask(idAccounts);
+        if(isFirstTime) {
+            isFirstTime = false;
+            AccountTriggerHelper.createTask(idAccounts);
+        }
     }
 
     public static void onAfterUpdate(Map<Id, Account> oldMap, Map<Id, Account> newMap){
-        AccountTriggerHelper.checkCountAccountTasks(newMap.keySet());
-        AccountTriggerHelper.checkChangeBilling(oldMap, newMap);
-        AccountTriggerHelper.checkChangeBillingQue(oldMap, newMap);
+        if(isFirstTime) {
+            isFirstTime = false;
+            AccountTriggerHelper.checkCountAccountTasks(newMap.keySet());
+            AccountTriggerHelper.checkChangeBilling(oldMap, newMap);
+            AccountTriggerHelper.checkChangeBillingQue(oldMap, newMap);
+        }
     }
+
 
 }

@@ -69,7 +69,6 @@ public with sharing class AccountTriggerHelper {
 
     public static void checkChangeBillingQue(Map<Id, Account> oldMap, Map<Id, Account> newMap){
         Set<Id> idAccounts = new Set<Id>();
-        System.debug('IN METHOD');
         for (Id accId : newMap.keySet()) {
             if (
                     (oldMap.get(accId).BillingCity != newMap.get(accId).BillingCity) ||

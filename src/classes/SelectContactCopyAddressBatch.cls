@@ -13,7 +13,7 @@ public with sharing class SelectContactCopyAddressBatch implements Database.Batc
         Set<Id> idAcc = new Set<Id>();
         System.debug('Batch working, scope size is ' + scope.size());
         for(Contact cont : scope){
-            if(!idAcc.contains(cont.AccountId) && cont.AccountId != null) {
+            if(cont.AccountId != null) {
                 cont.Is_Synced__c = true;
                 if(cont.Account.BillingAddress != null) {
                     cont.MailingCity = cont.Account.BillingCity;
@@ -23,11 +23,13 @@ public with sharing class SelectContactCopyAddressBatch implements Database.Batc
                     cont.MailingLatitude= cont.Account.BillingLatitude;
                     cont.MailingState = cont.Account.BillingState;
                     cont.MailingStreet = cont.Account.BillingStreet;
-                    Account acc = new Account();
-                    acc.Id = cont.Account.Id;
-                    acc.Updated_By_Contact__c = true;
-                    accountsToUpdate.add(acc);
-                    idAcc.add(cont.AccountId);
+                    if(!idAcc.contains(cont.AccountId)){
+                        Account acc = new Account();
+                        acc.Id = cont.Account.Id;
+                        acc.Updated_By_Contact__c = true;
+                        accountsToUpdate.add(acc);
+                        idAcc.add(cont.AccountId);
+                    }
             }
         }
     }
@@ -36,7 +38,7 @@ public with sharing class SelectContactCopyAddressBatch implements Database.Batc
     }
 
     public void finish(Database.BatchableContext bc){
-
+        System.debug('Butch finished');
     }
 
 
